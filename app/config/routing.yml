@@ -1,0 +1,4 @@
+hyper_book:
+    resource: "@HyperBookBundle/Controller/"
+    type:     annotation
+    prefix:   /
