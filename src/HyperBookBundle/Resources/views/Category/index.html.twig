@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} | Home{% endblock %}
+{% block body %}
+    {{ parent() }}
+
+    <div class="container">
+        <h2>All categories</h2>
+        <table class="table col-md-12">
+            <tr>
+                <th class="col-md-4">ID</th>
+                <th class="col-md-4">NAME</th>
+                <th class="col-md-4">DESCRIPTION</th>
+            </tr>
+            {% for category in categories %}
+                <tr>
+                    <td class="col-md-4">{{ category.id }}</td>
+                    <td class="col-md-4">{{ category.name }}</td>
+                    <td class="col-md-4">{{ category.description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

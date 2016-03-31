@@ -1,1 +1,1 @@
-Repo for noted TP in Symfony module
+Project for noted TP in Symfony module
