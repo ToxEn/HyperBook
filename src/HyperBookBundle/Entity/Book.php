@@ -56,6 +56,13 @@ class Book
      */
     private $totalDl;
 
+    /**
+     * @var object
+     *
+     * @ORM\ManyToOne(targetEntity="HyperBookBundle\Entity\Category")
+     */
+    private $category;
+
 
     /**
      * Get id
@@ -180,5 +187,28 @@ class Book
     public function getTotalDl()
     {
         return $this->totalDl;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \MimFrontBundle\Entity\Category $category
+     * @return Book
+     */
+    public function setCategory(\MimFrontBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \MimFrontBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }
