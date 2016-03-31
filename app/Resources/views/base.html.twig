@@ -52,7 +52,11 @@
                 </div><!-- /.container-fluid -->
             </nav>
         {% endblock %}
-        {% javascripts '@HyperBookBundle/Resources/public/js/jquery.js' '@HyperBookBundle/Resources/public/js/bootstrap.js' %}
+        {% javascripts
+        '@HyperBookBundle/Resources/public/js/jquery.js'
+        '@HyperBookBundle/Resources/public/js/bootstrap.js'
+        '@HyperBookBundle/Resources/public/js/script.js'
+        %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     </body>
