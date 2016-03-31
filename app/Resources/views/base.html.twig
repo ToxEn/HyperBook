@@ -27,9 +27,9 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ path('home') }}">Home <span class="sr-only">(current)</span></a></li>
+                            <li><a href="{{ path('home') }}">Home</a></li>
                             <li><a href="#">Books</a></li>
-                            <li><a href="#">Categories</a></li>
+                            <li><a href="{{ path('cat_home') }}">Categories</a></li>
                         </ul>
 
                         <ul class="nav navbar-nav navbar-right">
@@ -52,7 +52,11 @@
                 </div><!-- /.container-fluid -->
             </nav>
         {% endblock %}
-        {% javascripts '@HyperBookBundle/Resources/public/js/jquery.js' '@HyperBookBundle/Resources/public/js/bootstrap.js' %}
+        {% javascripts
+        '@HyperBookBundle/Resources/public/js/jquery.js'
+        '@HyperBookBundle/Resources/public/js/bootstrap.js'
+        '@HyperBookBundle/Resources/public/js/script.js'
+        %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     </body>
