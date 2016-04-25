@@ -9,56 +9,51 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/category", name="category")
+ * @Route("/book", name="book")
  */
-class CategoryController extends Controller
+class BookController extends Controller
 {
     /**
-     * @Route("/", name="cat_home")
+     * @Route("/", name="book_home")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $category = $em->getRepository('HyperBookBundle:Category')->findAll();
+        $book = $em->getRepository('HyperBookBundle:Book')->findAll();
 
-        return $this->render('HyperBookBundle:Category:index.html.twig', ["categories" => $category]);
+        return $this->render('HyperBookBundle:Book:index.html.twig', ["books" => $book]);
     }
 
     /**
-     * @Route("/add", name="cat_add")
+     * @Route("/add", name="book_add")
      */
     public function addAction(Request $request)
     {
         // just setup a fresh $task object (remove the dummy data)
-        $category = new Category();
+        $book = new Book();
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createFormBuilder($category)
+        $form = $this->createFormBuilder($book)
             ->add('title', 'text', ['attr' => ['class' => 'toto']])
             ->add('author', 'text', ['attr' => ['class' => 'toto']])
             ->add('description', 'text', ['attr' => ['class' => 'toto']])
+            ->add('totalDl', 'text', ['attr' => ['class' => 'toto']])
+            ->add('category', null, ['attr' => ['class' => 'toto']])
             ->add('imageFile', 'file', ['attr' => ['class' => 'toto']])
+            ->add('submit', 'submit', ['attr' => ['class' => 'toto']])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $book = new Book();
-            $book->setTitle();
-            $book->setAuthor();
-            $book->setCategory();
-            $book->setDescription();
-            $book->setTotalDl(0);
-            $book->setImageName();
-
-            $em->persit($book);
+            $em->persist($book);
             $em->flush();
 
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('default/new.html.twig', array(
+        return $this->render('HyperBookBundle:Book:add.html.twig', array(
             'form' => $form->createView(),
         ));
     }

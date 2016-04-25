@@ -3,12 +3,16 @@
 namespace HyperBookBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use HyperBookBundle\Entity\Category;
 
 /**
  * Book
  *
  * @ORM\Table(name="book")
  * @ORM\Entity(repositoryClass="HyperBookBundle\Repository\BookRepository")
+ * @Vich\Uploadable
  */
 class Book
 {
@@ -45,13 +49,6 @@ class Book
     /**
      * @var string
      *
-     * @ORM\Column(name="pdf", type="string", length=255)
-     */
-    private $pdf;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="total_dl", type="string", length=255)
      */
     private $totalDl;
@@ -63,6 +60,26 @@ class Book
      */
     private $category;
 
+    /**
+     * @Vich\UploadableField(mapping="book_image", fileNameProperty="imageName")
+     *
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $imageName;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
 
     /**
      * Get id
@@ -144,29 +161,6 @@ class Book
     }
 
     /**
-     * Set pdf
-     *
-     * @param string $pdf
-     * @return Book
-     */
-    public function setPdf($pdf)
-    {
-        $this->pdf = $pdf;
-
-        return $this;
-    }
-
-    /**
-     * Get pdf
-     *
-     * @return string 
-     */
-    public function getPdf()
-    {
-        return $this->pdf;
-    }
-
-    /**
      * Set totalDl
      *
      * @param string $totalDl
@@ -192,10 +186,10 @@ class Book
     /**
      * Set category
      *
-     * @param \MimFrontBundle\Entity\Category $category
+     * @param \HyperBookBundle\Entity\Category $category
      * @return Book
      */
-    public function setCategory(\MimFrontBundle\Entity\Category $category = null)
+    public function setCategory(\HyperBookBundle\Entity\Category $category = null)
     {
         $this->category = $category;
 
@@ -205,10 +199,61 @@ class Book
     /**
      * Get category
      *
-     * @return \MimFrontBundle\Entity\Category 
+     * @return \HyperBookBundle\Entity\Category
      */
     public function getCategory()
     {
         return $this->category;
     }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set imageName
+     *
+     * @param string $imageName
+     * @return Book
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * Get imageName
+     *
+     * @return string 
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Book
+     */
 }
