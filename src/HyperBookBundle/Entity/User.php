@@ -1,5 +1,4 @@
 <?php
-// src/HyperBookBundle/Entity/User.php
 
 namespace HyperBookBundle\Entity;
 

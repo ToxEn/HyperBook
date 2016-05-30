@@ -2,14 +2,16 @@
 
 namespace HyperBookBundle\Controller;
 
+
 use HyperBookBundle\Entity\Book;
 use HyperBookBundle\Entity\Category;
+use HyperBookBundle\Form\Type\BookType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/book", name="book")
+ * @Route("/books", name="book")
  */
 class BookController extends Controller
 {
@@ -20,41 +22,31 @@ class BookController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $book = $em->getRepository('HyperBookBundle:Book')->findAll();
+        $category = $em->getRepository('HyperBookBundle:Category')->findBy([],['id'=>'ASC']);
+        $book = $em->getRepository('HyperBookBundle:Book')->findBy([],['category'=>'ASC']);
 
-        return $this->render('HyperBookBundle:Book:index.html.twig', ["books" => $book]);
+        return $this->render('HyperBookBundle:Book:index.html.twig', ["books" => $book, "categories" => $category]);
     }
 
     /**
-     * @Route("/add", name="book_add")
+     * @Route("/download/{bookId}", name="book_download")
      */
-    public function addAction(Request $request)
+    public function downloadHomeAction(Book $bookId)
     {
-        // just setup a fresh $task object (remove the dummy data)
-        $book = new Book();
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createFormBuilder($book)
-            ->add('title', 'text', ['attr' => ['class' => 'toto']])
-            ->add('author', 'text', ['attr' => ['class' => 'toto']])
-            ->add('description', 'text', ['attr' => ['class' => 'toto']])
-            ->add('totalDl', 'text', ['attr' => ['class' => 'toto']])
-            ->add('category', null, ['attr' => ['class' => 'toto']])
-            ->add('imageFile', 'file', ['attr' => ['class' => 'toto']])
-            ->add('submit', 'submit', ['attr' => ['class' => 'toto']])
-            ->getForm();
+        $bookId->setTotalDl($bookId->getTotalDl());
+        $em->persist($bookId);
+        $em->flush();
 
-        $form->handleRequest($request);
+        $file = $bookId->getImageName();
+        $path = $this->get('kernel')->getRootDir() . '/../web/images/books/';
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($book);
-            $em->flush();
+        header ("Content-type: application/force-download");
+        header ("Content-disposition: filename=$file");
 
-            return $this->redirectToRoute('home');
-        }
+        readFile($path.$file);
 
-        return $this->render('HyperBookBundle:Book:add.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->redirectToRoute('home');
     }
 }

@@ -4,8 +4,97 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
-        <div class="col-md-3 col-lg-offset-4">
-            <h1>HyperBook !</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Last books uploaded</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover col-md-12">
+                                <tr>
+
+                                    {% if is_granted('ROLE_USER') %}
+                                        <th class="col-md-3">TITLE</th>
+                                        <th class="col-md-2">AUTHOR</th>
+                                        <th class="col-md-3">DESCRIPTION</th>
+                                        <th class="col-md-2">CATEGORY</th>
+                                        <th class="col-md-2">DOWNLOAD</th>
+                                    {% else %}
+                                        <th class="col-md-3">TITLE</th>
+                                        <th class="col-md-3">AUTHOR</th>
+                                        <th class="col-md-3">DESCRIPTION</th>
+                                        <th class="col-md-3">CATEGORY</th>
+                                    {% endif %}
+
+                                </tr>
+                                {% for bookLast in booksLast %}
+                                    <tr>
+                                        {% if is_granted('ROLE_USER') %}
+                                            <td class="col-md-3">{{ bookLast.title }}</td>
+                                            <td class="col-md-2">{{ bookLast.author }}</td>
+                                            <td class="col-md-3">{{ bookLast.description }}</td>
+                                            <td class="col-md-2">{{ bookLast.category }}</td>
+                                            <td class="col-md-2"><a class="btn btn-success" target="_blank" href="{{ path('home_download', {'bookId' : bookLast.id }) }}"><span class="glyphicon glyphicon-download-alt"></span>&nbsp;Download</a></td>
+                                        {% else %}
+                                            <td class="col-md-3">{{ bookLast.title }}</td>
+                                            <td class="col-md-3">{{ bookLast.author }}</td>
+                                            <td class="col-md-3">{{ bookLast.description }}</td>
+                                            <td class="col-md-3">{{ bookLast.category }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Top 5 download</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover col-md-12">
+                                <tr>
+                                    {% if is_granted('ROLE_USER') %}
+                                        <th class="col-md-3">TITLE</th>
+                                        <th class="col-md-2">AUTHOR</th>
+                                        <th class="col-md-3">DESCRIPTION</th>
+                                        <th class="col-md-2">CATEGORY</th>
+                                        <th class="col-md-2">DOWNLOAD</th>
+                                    {% else %}
+                                        <th class="col-md-3">TITLE</th>
+                                        <th class="col-md-3">AUTHOR</th>
+                                        <th class="col-md-3">DESCRIPTION</th>
+                                        <th class="col-md-3">CATEGORY</th>
+                                    {% endif %}
+                                </tr>
+                                {% for bookTop in booksTop %}
+                                    <tr>
+                                        {% if is_granted('ROLE_USER') %}
+                                            <td class="col-md-3">{{ bookTop.title }}</td>
+                                            <td class="col-md-2">{{ bookTop.author }}</td>
+                                            <td class="col-md-3">{{ bookTop.description }}</td>
+                                            <td class="col-md-2">{{ bookTop.category }}</td>
+                                            <td class="col-md-2"><a class="btn btn-info" target="_blank" href="{{ path('home_download', {'bookId' : bookTop.id }) }}"><span class="glyphicon glyphicon-download-alt"></span>&nbsp;Download</a></td>
+                                        {% else %}
+                                            <td class="col-md-3">{{ bookTop.title }}</td>
+                                            <td class="col-md-3">{{ bookTop.author }}</td>
+                                            <td class="col-md-3">{{ bookTop.description }}</td>
+                                            <td class="col-md-3">{{ bookTop.category }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
