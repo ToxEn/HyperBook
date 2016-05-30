@@ -18,6 +18,7 @@ class Category
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\OneToMany(targetEntity="HyperBookBundle\Entity\Book", mappedBy="category", cascade={"remove"})
      */
     private $id;
 
