@@ -23,8 +23,9 @@ class BookController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $category = $em->getRepository('HyperBookBundle:Category')->findBy([],['id'=>'ASC']);
-        $book = $em->getRepository('HyperBookBundle:Book')->findBy([],['category'=>'ASC']);
+        $book = $em->getRepository('HyperBookBundle:Book')->findBy([],['category'=>'DESC']);
 
+        //return $this->render('HyperBookBundle:Book:index.html.twig', ["books" => $book, "categories" => $category]);
         return $this->render('HyperBookBundle:Book:index.html.twig', ["books" => $book, "categories" => $category]);
     }
 
